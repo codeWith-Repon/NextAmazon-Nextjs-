@@ -34,7 +34,7 @@ const Search = async () => {
       />
       <button
         type='submit'
-        className='bg-primary text-primary-foreground text-black rounded-s-none h-full px-3 py-2'
+        className='bg-primary rounded-r-md text-primary-foreground text-black rounded-s-none h-full px-3 py-2'
       >
         <SearchIcon className='w-6 h-6' />
       </button>
