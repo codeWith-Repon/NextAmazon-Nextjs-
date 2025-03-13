@@ -1,8 +1,3 @@
-## connect mongodb
-
-###### lib>db>index.ts
-
-```bash
 import mongoose, { Connection } from "mongoose";
 
 interface MongooseGlobal {
@@ -33,4 +28,3 @@ export const connectToDatabase = async (
 
     return cached.conn
 }
-```
