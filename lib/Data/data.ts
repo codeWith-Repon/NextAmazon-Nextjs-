@@ -1,4 +1,8 @@
-const data = {
+import { Data } from "@/types"
+import products from "./ProductData"
+
+const data: Data = {
+    products,
     headerMenus: [
         {
             name: "Today's Deal",
