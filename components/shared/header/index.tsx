@@ -5,8 +5,8 @@ import { APP_NAME } from '@/lib/constants'
 import Search from './search'
 import Menu from './menu'
 import { Button } from '@/components/ui/button'
-import { MenuIcon } from 'lucide-react'
-import data from '@/lib/data'
+import { MenuIcon } from 'lucide-react';
+import data from '@/lib/Data/data'
 
 const Header = () => {
   return (
