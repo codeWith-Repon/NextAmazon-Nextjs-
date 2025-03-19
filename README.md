@@ -138,3 +138,9 @@ export default Product
 
 ```
 
+## add env variable in versel
+#### step 1:
+cpy all env variable together
+
+#### step 2: 
+go to versel and find project inside the project -> setting -> find Environment variables past all variable together under the key input box
