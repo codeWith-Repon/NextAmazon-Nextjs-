@@ -34,7 +34,8 @@ export const connectToDatabase = async (
     return cached.conn
 }
 ```
-#### sample of write schema and export 
+
+#### sample of write schema and export
 
 ```bash
 import { Document, Model, model, models, Schema } from 'mongoose'
@@ -138,9 +139,49 @@ export default Product
 
 ```
 
+# access env variable in project
+
+### public variable (process.env.NEXT_PUBLIC_APP_NAME)
+
+### private variable
+
+```bash
+import { connectToDatabase } from "."
+import products from "../Data/ProductData"
+import { cwd } from "process"
+import { loadEnvConfig } from "@next/env"
+import Product from "./models/product.model"
+
+loadEnvConfig(cwd())
+
+
+const main = async () => {
+    try {
+        await connectToDatabase(process.env.MONGODB_URI)
+
+        await Product.deleteMany()
+        const createdProducts = await Product.insertMany(products)
+
+        console.log({
+            createdProducts,
+            message: "Seeded database successfully",
+        })
+        process.exit(0)
+    } catch (error) {
+        console.error(error)
+        throw new Error("Failed to seed database")
+    }
+}
+
+main()
+```
+
 ## add env variable in versel
+
 #### step 1:
+
 cpy all env variable together
 
-#### step 2: 
+#### step 2:
+
 go to versel and find project inside the project -> setting -> find Environment variables past all variable together under the key input box
