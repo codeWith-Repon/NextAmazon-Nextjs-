@@ -43,7 +43,9 @@ const ProductPrice = ({
         className={`flex ${forListing && 'justify-center'} items-center gap-2`}
       >
         <div className={cn('text-3xl', className)}>
-          <span className='text-xs align-super'>${floatValue}</span>
+          <span className='text-xs align-super'>$</span>
+          {intValue}
+          <span className='text-xs align-super'>{floatValue}</span>
         </div>
         <div className='text-muted-foreground text-xs py-2'>
           Was: <span className='line-through'>{formatCurrency(listPrice)}</span>
