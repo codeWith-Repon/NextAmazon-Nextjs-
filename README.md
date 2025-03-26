@@ -237,3 +237,33 @@ export default function Rating({
 }
 
 ```
+
+# New Things
+
+```bash
+<Link
+        href={`/product/${product.slug}`}
+        className='overflow-hidden text-ellipsis'
+        style={{
+          display: '-webkit-box',
+          WebkitLineClamp: 2,
+          WebkitBoxOrient: 'vertical',
+        }}
+      >
+        {product.name}
+      </Link>
+```
+
+The text will only show two lines and will add ... if it overflows.
+
+- Why Not Use text-overflow: ellipsis?
+
+Usually, for single-line truncation, you'd use:
+
+```bash
+white-space: nowrap;
+overflow: hidden;
+text-overflow: ellipsis;
+```
+However, this only works for one line.
+To limit text to multiple lines, -webkit-line-clamp is the best approach.
