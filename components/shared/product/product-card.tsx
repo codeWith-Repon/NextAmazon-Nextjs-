@@ -21,7 +21,7 @@ const ProductCard = ({
   const ProductImage = () => (
     <Link href={`/product/${product.slug}`}>
       <div className='relative h-52'>
-        {product.images.length > 1 ? (
+        {product.images?.length > 1 ? (
           <ImageHover
             src={product.images[0]}
             hoverSrc={product.images[1]}
