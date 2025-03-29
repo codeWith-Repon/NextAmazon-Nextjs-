@@ -4,5 +4,5 @@ export const APP_SLOGAN =
 export const APP_DESCRIPTION =
     process.env.NEXT_PUBLIC_APP_DESCRIPTION || "An Amazona clone built with Next.js and TypeScript."
 
-
+export const PAGE_SIZE = Number(process.env.PAGE_SIZE || 9)
 
