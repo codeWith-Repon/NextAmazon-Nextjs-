@@ -265,5 +265,166 @@ white-space: nowrap;
 overflow: hidden;
 text-overflow: ellipsis;
 ```
+
 However, this only works for one line.
 To limit text to multiple lines, -webkit-line-clamp is the best approach.
+
+## pipeline for pagination
+
+```bash
+export async function getRelatedProducts({
+    category,
+    productId,
+    limit = PAGE_SIZE,
+    page = 1
+}: {
+    category: string,
+    productId: string,
+    limit?: number,
+    page?: number
+}) {
+    await connectToDatabase()
+
+    const skipAmount = (Number(page) - 1) * limit
+
+    # way 1
+    #  const conditions = {
+    #      isPublished: true,
+    #      category,
+    #      _id: { $ne: productId }
+    #  }
+    #  const products = await Product.find(conditions)
+    #      .sort({ numSales: 'desc' })
+    #      .skip(skipAmount)
+    #      .limit(limit)
+
+    #  const productsCount = await Product.countDocuments(conditions)
+
+    #  return {
+    #      data: JSON.parse(JSON.stringify(products)) as IProduct[],
+    #      totalPages: Math.ceil(productsCount / limit),
+    #  }
+
+    # // way 2
+    # যদি multi-faceted query দরকার হয়, যেখানে বিভিন্ন data set আলাদাভাবে বের করতে হবে, তাহলে $facet ভালো।
+    # যখন একসাথে আলাদা আলাদা dataset দরকার।
+    # যখন pagination, filtering বা sorting একাধিক query set-এ করতে হবে।
+    # যখন MongoDB-তে একাধিক query মারার চেয়ে এক কোয়েরিতে result পাওয়া দরকার।
+
+
+
+    # const products = await Product.aggregate([
+    #     {
+    #         $match: {
+    #             isPublished: true,
+    #             category,
+    #             _id: { $ne: productId }
+    #         }
+    #     },
+    #     {
+    #         $sort: { numSales: -1 }
+    #     },
+    #     {
+    #         $facet: {
+    #             metadata: [{ $count: 'total', }],
+    #             data: [{ $skip: skipAmount }, { $limit: limit }]
+    #         }
+    #     }
+    # ])
+    # const totalProducts = products[0]?.metadata[0]?.total || 0
+
+    # return {
+    #     data: JSON.parse(JSON.stringify(products[0]?.data || [])) as IProduct[],
+    #     totalPages: Math.ceil(totalProducts / limit),
+    # };
+
+    # // way 3 (besst)
+  #  যদি শুধু pagination এবং total count দরকার হয়, তাহলে $group + $project ব্যবহার করাই যথেষ্ট।
+  #  Performance: বেশি ডাটা থাকলে $facet ভালো হতে পারে, তবে $group + $project লাইটওয়েট ও সহজবোধ্য।
+
+  # 💡 কেন $facet এর পরিবর্তে $group + $project ব্যবহার করলাম?
+    # $facet প্রয়োজন নেই কারণ এখানে একাধিক dataset দরকার নেই।
+    # $group সব প্রোডাক্ট একত্রে এনে total count বের করতে সাহায্য করে।
+    # $project ব্যবহার করে pagination efficiently handle করা যায়।
+
+    const product = await Product.aggregate([
+      {
+        $match: {
+          isPublished: true,
+          category,
+          _id: {$ne: productId}
+        }
+      },
+      {
+        $sort: {numSales: -1}
+        #  data come like this formate [
+        # { "_id": 1, "name": "Laptop", "numSales": 50 },
+        # { "_id": 2, "name": "Phone", "numSales": 30 },
+        # { "_id": 3, "name": "Tablet", "numSales": 20 },
+        # { "_id": 4, "name": "Monitor", "numSales": 10 }
+        # ]
+      },
+      {
+        $group: {
+          _id: null,
+          total: {$sum: 1}
+          data: {$push: "$$ROOT"}
+        }
+
+        # Data comes like this stage
+        # [
+        # {
+        #   "_id": null,
+        #   "total": 4,
+        #   "data": [
+        #     { "_id": 1, "name": "Laptop", "numSales": 50 },
+        #     { "_id": 2, "name": "Phone", "numSales": 30 },
+        #     { "_id": 3, "name": "Tablet", "numSales": 20 },
+        #     { "_id": 4, "name": "Monitor", "numSales": 10 }
+        #   ]
+        # }
+        # ]
+      },
+      {
+        $project: {
+          _id: 0,
+          total: 1,
+          data: {
+            $slice: ["$data", skipamount, limit]
+          }
+        }
+    
+    # Data this stage
+
+    # {
+    #   $project: {
+    #     _id: 0,
+    #     total: 1,
+    #     data: {
+    #       $slice: ["$data", 1, 2]  // Skip 1 item, limit to 2 items
+    #     }
+    #   }
+    # }
+    # }
+
+    ])
+
+    # final output
+    # {
+    #   "total": 4,
+    #   "data": [
+    #     { "_id": 2, "name": "Phone", "numSales": 30 },
+    #     { "_id": 3, "name": "Tablet", "numSales": 20 }
+    #   ]
+    # }
+
+    const totalProducts = product[0]?.total || 0;
+    const pagination = product[0]?.data || []
+
+    return {
+    data: JSON.parse(JSON.stringify(pagination)) as IProduct[],
+    totalPages: Math.ceil(totalProducts / limit),
+    }
+
+}
+```
