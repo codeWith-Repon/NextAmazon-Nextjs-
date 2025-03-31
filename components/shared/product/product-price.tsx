@@ -1,5 +1,4 @@
 'use client';
-
 import { cn, formatCurrency } from '@/lib/utils';
 
 const ProductPrice = ({
@@ -24,6 +23,8 @@ const ProductPrice = ({
     : [stringValue, ''];
 
   return plain ? (
+    formatCurrency(price)
+  ) : listPrice === 0 ? (
     <div className={cn('text-3xl', className)}>
       <span className='text-xs align-super'>$</span>
       {intValue}
