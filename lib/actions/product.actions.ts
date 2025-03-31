@@ -93,7 +93,7 @@ export async function getProductBySlug(slug: string) {
 }
 
 // GET RELATED PRODUCTS: PRODUCTS WITH SAME CATEGORY
-export async function getRelatedProducts({
+export async function getRelatedProductsByCategory({
     category,
     productId,
     limit = PAGE_SIZE,
