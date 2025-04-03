@@ -428,3 +428,25 @@ export async function getRelatedProducts({
 
 }
 ```
+# autometic generate meta data
+
+app>(root)>product>[slug]>page.tsx
+
+```bash
+export async function generateMetadata(props: {
+  params: Promise<{ slug: string }>;
+}) {
+  const params = await props.params;
+  const product = await getProductBySlug(params.slug);
+  if (!product) {
+    return {
+      title: 'Product not found',
+    };
+  }
+  return {
+    title: product.name,
+    description: product.description,
+  };
+}
+```
+
