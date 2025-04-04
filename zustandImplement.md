@@ -51,7 +51,7 @@ export default function useBrowsingHistory() {
 ```
 
 # use 
-
+components/shared/browsing-history-list.tsx
 ```bash
 import useBrowsingHistory from '@/hooks/use-browsing-history';
 import React, { useEffect, useState } from 'react';

@@ -449,4 +449,7 @@ export async function generateMetadata(props: {
   };
 }
 ```
-
+# If you want to disable a specific ESLint rule for the next line, you can use this syntax:
+```bash
+// eslint-disable-next-line <rule-name>
+```
