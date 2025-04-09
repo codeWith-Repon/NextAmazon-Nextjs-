@@ -17,7 +17,9 @@ export const connectToDatabase = async (
     MONGODB_URI = process.env.MONGODB_URI
 ) => {
     if (cached.conn) {
-        console.log("✅ Using existing MongoDB connection.");
+        console.log(
+            `✅ Using existing MongoDB connection. DB HOST: ${cached.conn.host}`
+        );
         return cached.conn;
     }
 
@@ -26,7 +28,9 @@ export const connectToDatabase = async (
     cached.promise = cached.promise || mongoose.connect(MONGODB_URI, {
         dbName: process.env.DATABASE_NAME,
     }).then((mongooseInstance) => {
-        console.log("✅ New MongoDB connection established.");
+        console.log(
+            `✅ New MongoDB connection established. DB HOST: ${mongooseInstance.connection.host}`
+        );
         return mongooseInstance.connection
     })
 
