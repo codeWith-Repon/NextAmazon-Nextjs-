@@ -16,13 +16,19 @@ const cached = globalWithMongoose.mongoose;
 export const connectToDatabase = async (
     MONGODB_URI = process.env.MONGODB_URI
 ) => {
-    if (cached.conn) return cached.conn
+    if (cached.conn) {
+        console.log("✅ Using existing MongoDB connection.");
+        return cached.conn;
+    }
 
-    if (!MONGODB_URI) throw new Error('MONGODB_URI is missing')
+    if (!MONGODB_URI) throw new Error('❌ MONGODB_URI is missing')
 
     cached.promise = cached.promise || mongoose.connect(MONGODB_URI, {
         dbName: process.env.DATABASE_NAME,
-    }).then((mongooseInstance) => mongooseInstance.connection)
+    }).then((mongooseInstance) => {
+        console.log("✅ New MongoDB connection established.");
+        return mongooseInstance.connection
+    })
 
     cached.conn = await cached.promise
 
