@@ -57,6 +57,10 @@ export const OrderItemSchema = z.object({
         .number()
         .int()
         .nonnegative("Quantity must be a non-negative number"),
+    countInStock: z
+        .number()
+        .int()
+        .nonnegative("Stock must be a non-negative number"),
     image: z.string().min(1, "Image is required"),
     price: Price('Price'),
     size: z.string().optional(),
