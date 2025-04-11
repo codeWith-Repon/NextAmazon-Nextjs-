@@ -3,7 +3,7 @@ import { round2 } from "../utils"
 import { FREE_SHIPPING_PRICE } from "../constants"
 
 
-export const calcDeliveryDateAndPrice = ({
+export const calcDeliveryDateAndPrice = async ({
     items
 }: {
     deleveryDateIndex?: number,
