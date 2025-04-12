@@ -72,8 +72,8 @@ export default function CartAddItem({ itemId }: { itemId: string }) {
                   <div className='flex items-center'>
                     <div>
                       <span className='text-green-700'>
-                        Your order qualifies for FREE Shipping
-                      </span>
+                        Your order qualifies for FREE Shipping.
+                      </span>{" "}
                       Choose this option at checkout.
                     </div>
                   </div>
