@@ -80,7 +80,8 @@ export default function AddToCart({
 ```
 
 ### toast & if want to use any you must specify top of the file
- /* eslint-disable @typescript-eslint/no-explicit-any */
+
+/_ eslint-disable @typescript-eslint/no-explicit-any _/
 
 ```bash
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -199,4 +200,44 @@ export default function AddToCart({
 
 ```
 
+#### catch dynamic parms
 
+app/(root)/cart/[itemId]/page.tsx
+
+```tsx
+import React from 'react';
+import CartAddItem from './cart-add-item';
+
+export default async function CartAddItemPage(props: {
+  params: Promise<{ itemId: string }>;
+}) {
+  const { itemId } = await props.params;
+  return <CartAddItem itemId={itemId} />;
+}
+```
+
+#### buttonVarient
+- This function comes from shadcn/ui 
+- So when call buttonVariants(), it returns a default button style string, like:
+```bash
+"inline-flex items-center justify-center bg-primary text-white px-4 py-2 rounded-md text-sm font-medium"
+```
+-  These are your default button styles, which make the link look like a button.
+- You're manually adding extra styles: 'rounded-full w-full'
+
+```tsx
+  <Link
+                  href='/checkout'
+                  className={cn(buttonVariants(), 'rounded-full w-full')}
+                >
+                  Proceed to checkout (
+                  {items.reduce((acc, item) => acc + item.quantity, 0)} items )
+                </Link>
+                <Link
+                  href='/cart'
+                  className={cn(
+                    buttonVariants({ variant: 'outline' }),
+                    'rounded-full w-full'
+                  )}
+                >
+```
