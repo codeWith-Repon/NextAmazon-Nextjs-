@@ -3,6 +3,8 @@ export const APP_SLOGAN =
     process.env.NEXT_PUBLIC_APP_SLOGAN || "Spand less, enjoy more."
 export const APP_DESCRIPTION =
     process.env.NEXT_PUBLIC_APP_DESCRIPTION || "An Amazona clone built with Next.js and TypeScript."
+export const APP_COPYRIGHT = process.env.NEXT_PUBLIC_APP_COPYRIGHT ||
+    `Copyright © 2025 ${APP_NAME}. All rights reserved.`;
 
 export const PAGE_SIZE = Number(process.env.PAGE_SIZE || 9)
 

@@ -1,8 +1,10 @@
 import { Data } from "@/types"
 import products from "./ProductData"
+import { users } from './userData'
 
 const data: Data = {
     products,
+    users,
     headerMenus: [
         {
             name: "Today's Deal",
