@@ -217,12 +217,15 @@ export default async function CartAddItemPage(props: {
 ```
 
 #### buttonVarient
-- This function comes from shadcn/ui 
+
+- This function comes from shadcn/ui
 - So when call buttonVariants(), it returns a default button style string, like:
+
 ```bash
 "inline-flex items-center justify-center bg-primary text-white px-4 py-2 rounded-md text-sm font-medium"
 ```
--  These are your default button styles, which make the link look like a button.
+
+- These are your default button styles, which make the link look like a button.
 - You're manually adding extra styles: 'rounded-full w-full'
 
 ```tsx
@@ -241,3 +244,5 @@ export default async function CartAddItemPage(props: {
                   )}
                 >
 ```
+
+when run this command $ npx auth secret. It's autometically update .env.local fille don't need to warry about this
