@@ -8,6 +8,7 @@ import Link from 'next/link';
 import { auth } from '@/auth';
 import { redirect } from 'next/navigation';
 import { Button } from '@/components/ui/button';
+import { GoogleSignInForm } from './google-signin-form';
 
 export const metadata: Metadata = {
   title: 'Sign In',
@@ -33,6 +34,10 @@ export default async function SignIn(props: {
         <CardContent>
           <div>
             <CredentialsSignInForm />
+          </div>
+          <SeparatorWithOr />
+          <div className='mt-4'>
+            <GoogleSignInForm />
           </div>
         </CardContent>
       </Card>
