@@ -1,10 +1,11 @@
-"use client"
+'use client';
 import { UserSignInSchema } from '@/lib/validator';
 import { IUserSignIn } from '@/types';
-import React from 'react';
+import React, { useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { redirect, useSearchParams } from 'next/navigation';
+import { Eye, EyeOff } from 'lucide-react';
 import {
   Form,
   FormControl,
@@ -33,8 +34,11 @@ const signInDefaultValues =
       };
 
 export default function CredentialsSignInForm() {
+  const [showPassword, setShowPassword] = useState(false);
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get('callbackUrl') || '/';
+
+  const togglePasswordVisibility = () => setShowPassword(!showPassword);
 
   const form = useForm<IUserSignIn>({
     resolver: zodResolver(UserSignInSchema),
@@ -73,7 +77,11 @@ export default function CredentialsSignInForm() {
               <FormItem className='w-full'>
                 <FormLabel>Email</FormLabel>
                 <FormControl>
-                  <Input placeholder='Enter your email address' {...field} />
+                  <Input
+                    placeholder='Enter your email address'
+                    {...field}
+                    type='email'
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -84,15 +92,27 @@ export default function CredentialsSignInForm() {
             control={control}
             name='password'
             render={({ field }) => (
-              <FormItem className='w-full'>
+              <FormItem className='w-full relative'>
                 <FormLabel>Password</FormLabel>
                 <FormControl>
                   <Input
-                    type='password'
+                    type={showPassword ? 'text' : 'password'}
                     placeholder='Enter password'
                     {...field}
                   />
                 </FormControl>
+                <button
+                  type='button'
+                  className='absolute right-2 top-[26px] translate-y-1/2
+                   text-muted-foreground'
+                  onClick={togglePasswordVisibility}
+                >
+                  {showPassword ? (
+                    <Eye className='w-4 h-4' />
+                  ) : (
+                    <EyeOff className='w-4 h-4' />
+                  )}
+                </button>
                 <FormMessage />
               </FormItem>
             )}

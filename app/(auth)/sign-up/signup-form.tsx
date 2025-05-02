@@ -20,9 +20,11 @@ import { APP_NAME } from '@/lib/constants';
 import { UserSignUpSchema } from '@/lib/validator';
 import { IUserSignUp } from '@/types';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Eye, EyeOff } from 'lucide-react';
 import { isRedirectError } from 'next/dist/client/components/redirect-error';
 import Link from 'next/link';
 import { redirect, useSearchParams } from 'next/navigation';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 const signUpDefaultValues =
@@ -43,6 +45,13 @@ const signUpDefaultValues =
 export default function SignUpForm() {
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get('callbackUrl') || '/';
+
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  const togglePasswordVisibility = () => setShowPassword(!showPassword);
+  const toggleConfirmPasswordVisibility = () =>
+    setShowConfirmPassword(!showConfirmPassword);
 
   const form = useForm<IUserSignUp>({
     resolver: zodResolver(UserSignUpSchema),
@@ -116,15 +125,27 @@ export default function SignUpForm() {
             control={control}
             name='password'
             render={({ field }) => (
-              <FormItem className='w-full'>
+              <FormItem className='w-full relative'>
                 <FormLabel>Password</FormLabel>
                 <FormControl>
                   <Input
-                    type='passwod'
+                    type={showPassword ? 'text' : 'password'}
                     placeholder='Enter password'
                     {...field}
                   />
                 </FormControl>
+                <button
+                  type='button'
+                  onClick={togglePasswordVisibility}
+                  className='absolute right-2 top-[26px] translate-y-1/2
+                   text-muted-foreground'
+                >
+                  {showPassword ? (
+                    <EyeOff className='w-4 h-4' />
+                  ) : (
+                    <Eye className='w-4 h-4' />
+                  )}
+                </button>
                 <FormMessage />
               </FormItem>
             )}
@@ -134,15 +155,27 @@ export default function SignUpForm() {
             control={control}
             name='confirmPassword'
             render={({ field }) => (
-              <FormItem className='w-full'>
+              <FormItem className='w-full relative'>
                 <FormLabel>Confirm Password</FormLabel>
                 <FormControl>
                   <Input
-                    type='passwod'
+                    type={showConfirmPassword ? 'text' : 'password'}
                     placeholder='Confirm password'
                     {...field}
                   />
                 </FormControl>
+                <button
+                  type='button'
+                  onClick={toggleConfirmPasswordVisibility}
+                  className='absolute right-2 top-[26px] translate-y-1/2
+                   text-muted-foreground'
+                >
+                  {showConfirmPassword ? (
+                    <EyeOff className='w-4 h-4' />
+                  ) : (
+                    <Eye className='w-4 h-4' />
+                  )}
+                </button>
                 <FormMessage />
               </FormItem>
             )}
