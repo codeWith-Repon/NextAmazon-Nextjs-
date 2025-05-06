@@ -1,3 +1,7 @@
+## if google authentication problem appears see this
+
+[link](https://youtu.be/WLHCPwqHzzQ?t=11586)
+
 #### To round a number to exactly 2 decimal places, avoiding common JavaScript floating point errors.
 
 ```bash
