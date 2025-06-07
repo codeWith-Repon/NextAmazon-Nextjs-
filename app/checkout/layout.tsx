@@ -4,9 +4,9 @@ import Link from 'next/link';
 import CheckoutFrom from './checkout-from';
 
 export default function CheckoutLayout({
-  cheldren,
+  children,
 }: {
-  cheldren: React.ReactNode;
+  children: React.ReactNode;
 }) {
   return (
     <div className='p-4'>
@@ -35,7 +35,7 @@ export default function CheckoutLayout({
         </div>
       </header>
       <CheckoutFrom/>
-      {cheldren}
+      {children}
     </div>
   );
 }
