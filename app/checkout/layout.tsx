@@ -1,7 +1,6 @@
 import { HelpCircle } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import CheckoutFrom from './checkout-from';
 
 export default function CheckoutLayout({
   children,
@@ -34,7 +33,7 @@ export default function CheckoutLayout({
           </div>
         </div>
       </header>
-      <CheckoutFrom/>
+
       {children}
     </div>
   );

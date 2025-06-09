@@ -609,7 +609,7 @@ const CheckoutFrom = () => {
                                     </div>
 
                                     <div>
-                                      {(dd.shippingPrice > 0 &&
+                                      {(dd.freeShippingMinPrice > 0 &&
                                       itemsPrice >= dd.freeShippingMinPrice
                                         ? 0
                                         : dd.shippingPrice) === 0 ? (
