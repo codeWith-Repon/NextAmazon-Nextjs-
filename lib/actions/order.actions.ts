@@ -1,3 +1,5 @@
+'use server'
+
 import { Cart, OrderItem, ShippingAddress } from "@/types"
 import { formatError, round2 } from "../utils"
 import { AVAILABLE_DELIVERY_DATES } from "../constants"
