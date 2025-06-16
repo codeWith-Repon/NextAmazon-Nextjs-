@@ -42,6 +42,8 @@ import Link from 'next/link';
 import CheckoutFooter from './checkout-footer';
 import { useRouter } from 'next/navigation';
 import useIsMounted from '@/hooks/use-is-mounted';
+import { createOrder } from '@/lib/actions/order.actions';
+import { toast } from '@/hooks/use-toast';
 
 const shippingAddressDefaultValues =
   process.env.NODE_ENV === 'development'
@@ -83,6 +85,7 @@ const CheckoutFrom = () => {
     updateItem,
     removeItem,
     setDeliveryDateIndex,
+    clearCart,
   } = useCartStore();
 
   const isMounted = useIsMounted();
@@ -116,7 +119,32 @@ const CheckoutFrom = () => {
     useState<boolean>(false);
 
   const handlePlaceOrder = async () => {
-    // TODO: place order
+    const res = await createOrder({
+      items,
+      shippingAddress,
+      expectedDeliveryDate: calculateFutureDate(
+        AVAILABLE_DELIVERY_DATES[deliveryDateIndex!].daysToDeliver
+      ),
+      deliveryDateIndex,
+      paymentMethod,
+      itemsPrice,
+      shippingPrice,
+      taxPrice,
+      totalPrice,
+    });
+    if (!res.success) {
+      toast({
+        description: res.message,
+        variant: 'destructive',
+      });
+    } else {
+      toast({
+        description: res.message,
+        variant: 'default',
+      });
+      clearCart();
+      router.push(`/checkout/${res.data?.orderId}`);
+    }
   };
 
   const handleselectPaymentMethod = () => {
